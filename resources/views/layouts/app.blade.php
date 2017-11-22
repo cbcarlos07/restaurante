@@ -59,7 +59,7 @@
         <li ><a href="lancamento.php"><i class="fa fa-users" aria-hidden="true"></i> Lan&ccedil;amentos</a></li>
         <li ><a href="pessoa.php"><i class="fa fa-rss" aria-hidden="true"></i> Cliente</a></li>
         <li ><a href="item.php"><i class="fa fa-book" aria-hidden="true"></i> Item</a></li>
-        <li ><a href="empresa.php"><i class="fa fa-bullhorn" aria-hidden="true"></i> Empresa</a></li>
+        <li ><a href="{{ route('emp.index') }}"><i class="fa fa-bullhorn" aria-hidden="true"></i> Empresa</a></li>
         <li ><a href="usuarios.php"><i class="fa fa-user"></i> Usu&aacute;rios</a></li>
         <li ><a href="nivel.php"><i class="fa fa-info" aria-hidden="true"></i> N&iacute;vel</a></li>
 
