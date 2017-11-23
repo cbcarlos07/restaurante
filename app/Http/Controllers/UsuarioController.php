@@ -107,7 +107,8 @@ class UsuarioController extends Controller
         $id = $request->get('id');
 
        // var_dump( $ativo );
-        if( isset( $ativo ) ){
+
+        if( !is_null( $ativo ) ){
             $ativo = 'S';
         }else{
             $ativo = 'N';

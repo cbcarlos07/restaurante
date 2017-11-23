@@ -17,6 +17,16 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+
+Route::group(['as' => 'cli.', 'prefix' => 'cliente'], function (){
+    Route::get('',['as' => 'index', 'uses' => 'ClienteController@index']);
+    Route::get('cadastrar',['as' => 'create', 'uses' => 'ClienteController@create']);
+    Route::post('salvar',['as' => 'store', 'uses' => 'ClienteController@store']);
+    Route::post('delete',['as' => 'remove', 'uses' => 'ClienteController@remove']);
+    Route::post('edit',['as' => 'edit', 'uses' => 'ClienteController@edit']);
+    Route::post('update',['as' => 'update', 'uses' => 'ClienteController@update']);
+});
+
 Route::group(['as' => 'usu.', 'prefix' => 'usuario'], function (){
     Route::get('',['as' => 'index', 'uses' => 'UsuarioController@index']);
     Route::get('cadastrar',['as' => 'create', 'uses' => 'UsuarioController@create']);
@@ -25,7 +35,6 @@ Route::group(['as' => 'usu.', 'prefix' => 'usuario'], function (){
     Route::post('edit',['as' => 'edit', 'uses' => 'UsuarioController@edit']);
     Route::post('update',['as' => 'update', 'uses' => 'UsuarioController@update']);
 });
-
 
 Route::group(['as' => 'item.', 'prefix' => 'item'], function (){
     Route::get('',['as' => 'index', 'uses' => 'ItemController@index']);
@@ -38,6 +47,7 @@ Route::group(['as' => 'item.', 'prefix' => 'item'], function (){
 
 Route::group(['as' => 'emp.','prefix' => 'empresa'], function(){
     Route::get('',['as' => 'index', 'uses' => 'EmpresaController@index']);
+    Route::post('lista',['as' => 'list', 'uses' => 'EmpresaController@lista']);
     Route::get('cadastrar',['as' => 'create', 'uses' => 'EmpresaController@create']);
     Route::post('salvar',['as' => 'store', 'uses' => 'EmpresaController@store']);
     Route::post('delete',['as' => 'remove', 'uses' => 'EmpresaController@remove']);

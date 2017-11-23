@@ -57,7 +57,7 @@
         <li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Charts</a></li>
         <li><a href="tables.html"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Tables</a></li>-->
         <li ><a href="lancamento.php"><i class="fa fa-users" aria-hidden="true"></i> Lan&ccedil;amentos</a></li>
-        <li ><a href="pessoa.php"><i class="fa fa-rss" aria-hidden="true"></i> Cliente</a></li>
+        <li ><a href="{{ route('cli.index') }}"><i class="fa fa-rss" aria-hidden="true"></i> Cliente</a></li>
         <li ><a href="{{ route('item.index') }}"><i class="fa fa-book" aria-hidden="true"></i> Item</a></li>
         <li ><a href="{{ route('emp.index') }}"><i class="fa fa-bullhorn" aria-hidden="true"></i> Empresa</a></li>
         <li ><a href="{{ route('usu.index') }}"><i class="fa fa-user"></i> Usu&aacute;rios</a></li>

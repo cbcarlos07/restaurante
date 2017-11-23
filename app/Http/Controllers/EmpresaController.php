@@ -17,6 +17,13 @@ class EmpresaController extends Controller
 
     }
 
+    public function lista(){
+
+        $empresa = Empresa::all(  );
+        return response()->json( $empresa );
+
+    }
+
     public function create(){
         return view('layouts.empresacad');
     }

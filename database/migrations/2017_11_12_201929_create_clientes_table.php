@@ -21,7 +21,7 @@ class CreateClientesTable extends Migration
             $table->string('nr_casa');
             $table->string('ds_complemento');
             $table->date('dt_cadastro');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('senha');
             $table->char('sn_senha_atual',1);
             $table->foreign('empresa')->references('id')->on('empresas');
