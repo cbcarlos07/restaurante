@@ -197,14 +197,24 @@
 
             <div class="col-lg-12">
 
-                <div class="form-group col-lg-1">
-                    <label for="cracha">Crach&aacute;</label>
-                    <input id="cracha" class="form-control">
-                </div>
-                <div class="form-group col-lg-5">
-                    <label for="nome">Cliente</label>
-                    <input class="form-control" id="nome">
-                </div>
+                <form action="{{ route('lanc.pesquisar') }}" method="post" >
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                    <div class="form-group col-lg-5 {{ $errors->has('search') ? ' has-error' : '' }}">
+                        <label for="nome">Cliente</label>
+                        <input class="form-control" name="search" id="nome" placeholder="Nome ou crach&aacute;">
+                        @if( $errors->has('search') )
+                            <span class="help-block" style="text-align: center">
+                               <strong>{{ $errors->first('search') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                    <div class="form-group col-lg-5">
+                        <button type="submit"  href="#click" class="btn btn-success btn-pesq" style="margin-top: 25px;">
+                            <i class="glyphicon glyphicon-search"></i> Pesquisar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -255,12 +265,11 @@
 
 
     </div><!--/.main-->
-    <script src="{{ asset('js/jquery-3.2.1.js') }}"></script>
-    <script src="{{ url('js/bootstrap.min.js') }}"></script>
-    <script src="{{ url('js/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.mask.js') }}"></script>
-    <script src="{{ asset('js/jquery.tabletojson.min.js') }}"></script>
-    <script>
+    @section('js')
+        <script src="{{ url('js/chosen.jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.mask.js') }}"></script>
+        <script src="{{ asset('js/jquery.tabletojson.min.js') }}"></script>
+        <script>
 
 
 
@@ -269,10 +278,10 @@
 
 
 
-        //$('#cliente', '.modal-registro').chosen('destroy').chosen( {allow_single_deselect: true} );
-        $('.progress').fadeOut();
-        $('.mensagem').fadeOut();
-        $('.msgAvisoModal').fadeOut();
+            //$('#cliente', '.modal-registro').chosen('destroy').chosen( {allow_single_deselect: true} );
+            $('.progress').fadeOut();
+            $('.mensagem').fadeOut();
+            $('.msgAvisoModal').fadeOut();
 
             $(document).on('show.bs.modal', '.modal-registro', function () {
                 $('#cliente', this).chosen('destroy').chosen( {allow_single_deselect: true} );
@@ -288,9 +297,9 @@
                 console.log('MOdal registro');
             });*/
 
-        $('.btn-novo').on('click', function () {
-            $('.modal-registro').modal('show');
-        });
+            $('.btn-novo').on('click', function () {
+                $('.modal-registro').modal('show');
+            });
             $('#produto').on('change', function () {
                 var id = $(this).val();
                 if (id > 0 ){
@@ -352,7 +361,7 @@
 
                     if( $('#cliente').val() == 0 ){
                         console.log("Falta selecionar um cliente");
-                     /*  $('#cliente_chosen').addClass('required');*/
+                        /*  $('#cliente_chosen').addClass('required');*/
                         $('.combo_cliente').addClass('has-error');
                     }
 
@@ -465,7 +474,7 @@
 
                 var pessoa = $('#cliente').val();
                 var tabela  = getDataTable();
-               // tabela = tableToJson(tabela);
+                // tabela = tableToJson(tabela);
                 var itens   = JSON.stringify( tabela );
                 var pago    = $('#pago');
                 var snpago = "N";
@@ -566,9 +575,9 @@
                 var id = $(this).data('id');
 
                 var form = $('<form action="{{ route('lanc.registro') }}" method="post">' +
-                               '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
-                               '<input type="hidden" name="id" value="'+id+'">'+
-                            '</form>');
+                    '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
+                    '<input type="hidden" name="id" value="'+id+'">'+
+                    '</form>');
                 $('body').append( form );
                 form.submit();
 
@@ -578,19 +587,20 @@
                 var id = $(this).data('id');
                 var total = $(this).data( 'valor' );
                 console.log("Total: "+formataDinheiro( parseFloat( total ) ));
-                $('span.vl-total').text( formataDinheiro( parseFloat( total )) );
+
                 calcularTotal();
                 $('.modal-pay').modal('show');
+                $('span.vl-total').text( formataDinheiro( parseFloat( total )) );
                 //calcularTroco();
                 $('.btn-yes').on( 'click', function () {
                     $.ajax({
-                        url : 'function/registro.php',
+                        url : '{{ route('lanc.pagamento') }}',
                         type: 'post',
                         dataType: 'json',
                         beforeSend : aguardandoModal(),
                         data: {
-                            acao : 'V',
-                            pessoa : id
+                            _token : '{{ csrf_token() }}',
+                            id : id
                         },
                         success : function (data) {
                             if( data.retorno > 0 ){
@@ -605,6 +615,18 @@
             });
 
 
+            $('.btn-print').on('click', function () {
+                var total = $('span.total').text();
+                //  alert('tOTAL: '+total);
+                var form = $('<form action="{{ route('lanc.imprimir') }}" method="post">' +
+                    '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
+                    '<input type="hidden" name="valor" value="'+total+'">'+
+                    '</form>');
+                $('body').append( form );
+                form.submit();
+            });
+            </script>
 
-    </script>
+    @endsection
+
 @endsection

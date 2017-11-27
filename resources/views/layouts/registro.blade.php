@@ -182,9 +182,9 @@
             $('span.vl-total').html( formataDinheiro( parseFloat( valor ) ) );
             var divValor = $('#valorpago');
             //divValor.val( "R$ 0,00" );
-            $('#valorpago').val( '0' );
+          //  $('#valorpago').val( '0' );
             $('#cdregistro').val( id );
-            calcularTroco();
+           // calcularTroco();
             $('.modal-registro').modal('show');
 
             $('.btn-sim').on('click', function () {

@@ -46,11 +46,7 @@
 
 
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <form role="search">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
-    </form>
+
     <ul class="nav menu">
         <!--<li><a href="index1.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard</a></li>
         <li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Widgets</a></li>
@@ -61,7 +57,7 @@
         <li ><a href="{{ route('item.index') }}"><i class="fa fa-book" aria-hidden="true"></i> Item</a></li>
         <li ><a href="{{ route('emp.index') }}"><i class="fa fa-bullhorn" aria-hidden="true"></i> Empresa</a></li>
         <li ><a href="{{ route('usu.index') }}"><i class="fa fa-user"></i> Usu&aacute;rios</a></li>
-        <li ><a href="nivel.php"><i class="fa fa-info" aria-hidden="true"></i> N&iacute;vel</a></li>
+
 
 
 
@@ -91,7 +87,7 @@
             </ul>
         </li>
         <li role="presentation" class="divider"></li>-->
-        <li><a href="#login" class="btn-login"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+
     </ul>
     <div class="attribution">Template by <a href="http://www.medialoot.com/item/lumino-admin-bootstrap-template/">Medialoot</a><br/><a href="http://www.glyphs.co" style="color: #333;">Icons by Glyphs</a></div>
 </div><!--/.sidebar-->
@@ -102,6 +98,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    @yield('js')
     <script>
         /**
          * Created by carlos on 20/08/17.
@@ -109,8 +106,20 @@
         var selector = '.nav li';
         var url = window.location.href;
         var target = url.split('/');
+
         $(selector).each(function(){
-            if($(this).find('a').attr('href')===(target[target.length-1])){
+            var urlAtual = target[target.length-1].split('#');
+            var addressBar = $(this).find('a').attr('href');
+            var alvo = addressBar.split('/');
+            var link = alvo[alvo.length-1];
+            //    console.log( url );
+            ////  console.log(  $(this).find('a').attr('href')+" - "+ url);
+            //  console.log(  link+" - "+ urlAtual[0]);
+            if( link == urlAtual[0] ){
+                //     console.log( "Igual" );
+                // if($(this).find('a').attr('href')===urlAtual[0]){
+                //    if($(this).find('a').attr('href')===($(this).find('a').attr('href'))){
+
                 $(selector).removeClass('active');
                 $(this).addClass('active');
             }

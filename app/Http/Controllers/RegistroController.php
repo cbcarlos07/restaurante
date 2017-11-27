@@ -10,6 +10,8 @@ use App\Registro;
 use App\Item;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
+use Validator;
 
 class RegistroController extends Controller
 {
@@ -34,6 +36,52 @@ class RegistroController extends Controller
                                                          'clientes'  => $cliente,
                                                          'itens'      => $item
                                                        ] );
+    }
+
+    public function pesquisar( Request $request ){
+
+        $pequisa = $request->get('search');
+        /* $values = array(
+             'search' => $pequisa
+         );
+
+         $validator = Validator::make(
+             $values,
+             [
+                 'search' => 'required'
+             ]
+             ,
+             [
+                 'required' => 'É necessário preencher este campo para pesquisar'
+             ]
+         );
+         if( $validator->fails() ){
+             return redirect()->back()->withErrors( $validator )->withInput();*/
+    //    }else{
+            $registro = Registro::with([ 'clientes' => function( $query ) {
+                $query->with('empresas');
+            }, 'itens'] )
+                ->select( DB::raw('sum( vl_preco ) as valor, cliente, item') )
+                ->where( 'sn_pago', 'N' )
+                ->whereHas( 'clientes', function ( $query ){
+                    $query->where( 'nm_cliente', 'like', '%'.\Request::input('search').'%' )
+                        ->orWhere( 'nr_cracha', 'like', '%'.\Request::input('search').'%' )  ;
+                } )
+                ->groupBy('cliente')
+                ->paginate(10);
+
+
+            $cliente = Cliente::all();
+            $item    = Item::all();
+
+            // return response()->json( $registro );
+            return view('layouts.lancamento')->with( [
+                'registros' => $registro,
+                'clientes'  => $cliente,
+                'itens'      => $item
+            ] );
+      //  }
+
 
 
     }
@@ -105,10 +153,8 @@ class RegistroController extends Controller
 
         $id = $request->get('registro');
 
-        $registro = Registro::find( $id );
-        $registro->sn_pago = 'S';
 
-        if( $registro->save() ){
+        if( $this->registrar( $id ) ){
 
             return response()->json( array( "retorno" => 1 ) );
 
@@ -117,9 +163,71 @@ class RegistroController extends Controller
             return response()->json( array( "retorno" => 0 ) );
         }
 
+     }
 
+     public function registrarPagamentos( Request $request ){
 
+         $id = $request->get('id');
+
+         $registros = Registro::with('clientes')
+                              ->where('sn_pago','N')
+                              ->where('cliente', $id )
+                             ->get();
+
+         $retorno = false;
+        //comp echo json_encode( $registros );
+         foreach ( $registros as $registro ){
+
+             $retorno = $this->registrar( $registro->id );
+           //  echo "Codigo: ".$registro->id. "\n";
+
+         }
+
+         if( $retorno ){
+             return response()->json( array('retorno' => 1) );
+         }
+         else{
+             return response()->json( array('retorno' => 0) );
+         }
 
 
      }
+
+     private function registrar( $id ){
+
+         $registro = Registro::find( $id );
+         $registro->sn_pago = 'S';
+         $retorno =  false;
+
+         if( $registro->save() ){
+
+             $retorno = true;
+
+         }
+
+         return $retorno;
+     }
+
+     public function imprimir( Request $request ){
+
+         $total = $request->get('valor');
+
+         $registros = Registro::with(['clientes' => function ( $query ){
+                                      $query->with('empresas');
+                                 }])
+                              ->select(DB::raw('cliente, sum( vl_preco ) as total'))
+                              ->where( 'sn_pago','N' )
+                              ->groupBy( 'cliente' )
+                              ->get();
+
+        //echo json_encode( $registros );
+         return PDF::loadView('layouts.imprimir',
+             [
+                 'registros' => $registros
+                 ,'total'     => $total
+             ])->stream( 'my.pdf',array('Attachment'=>0) );
+
+
+     }
+
 }

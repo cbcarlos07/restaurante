@@ -23,6 +23,9 @@ Route::group(['as' => 'lanc.', 'prefix' => 'lancamento'], function (){
     Route::post('registrarCompra',['as' => 'registrar', 'uses' => 'RegistroController@registrarCompra']);
     Route::post('registro',['as' => 'registro', 'uses' => 'RegistroController@listaRegistros']);
     Route::post('pagar',['as' => 'pagar', 'uses' => 'RegistroController@registrarPagamento']);
+    Route::post('pagamento',['as' => 'pagamento', 'uses' => 'RegistroController@registrarPagamentos']);
+    Route::post('imprimir',['as' => 'imprimir', 'uses' => 'RegistroController@imprimir']);
+    Route::post('pesquisar',['as' => 'pesquisar', 'uses' => 'RegistroController@pesquisar']);
 });
 
 
