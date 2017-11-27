@@ -110,4 +110,12 @@ class ItemController extends Controller
 
 
     }
+
+    public function getItemValue( Request $request ){
+        $id = $request->get('id' );
+
+        $item = Item::find( $id );
+
+        return response()->json( $item );
+    }
 }

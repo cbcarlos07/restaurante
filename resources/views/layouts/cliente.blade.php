@@ -86,7 +86,10 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            {{ $cliente->links() }}
+                            <div style="text-align: center">
+                                {{ $cliente->links() }}
+                            </div>
+
                         </div>
 
                     </div>

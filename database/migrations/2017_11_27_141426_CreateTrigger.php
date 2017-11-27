@@ -3,7 +3,6 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-
 class CreateTrigger extends Migration
 {
     /**
@@ -13,14 +12,12 @@ class CreateTrigger extends Migration
      */
     public function up()
     {
-        DB::unprepared(
-            "CREATE TRIGGER `trg_insert_pay` AFTER UPDATE ON registros
-                    FOR EACH ROW
-                      BEGIN
+       DB::unprepared("CREATE TRIGGER `trg_insert_pay` AFTER UPDATE ON registros
+        FOR EACH ROW
+          BEGIN
 
-                           INSERT INTO pgto_clientes VALUES (NULL, NEW.id, NOW(), NEW.vl_preco );
-                      END"
-        );
+               INSERT INTO pgto_cliente (registro, dt_pgto, nr_valor, created_at, updated_at) VALUES  (NEW.id, NOW(), NEW.vl_preco, NOW(), NOW() );
+          END");
     }
 
     /**
@@ -31,5 +28,6 @@ class CreateTrigger extends Migration
     public function down()
     {
         //
+        DB::unprepared( "DROP TRIGGER `trg_insert_pay`" );
     }
 }

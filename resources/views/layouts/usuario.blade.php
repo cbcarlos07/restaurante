@@ -96,6 +96,9 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div style="text-align: center">
+                                {{ $usuario->links() }}
+                            </div>
                         </div>
 
                     </div>

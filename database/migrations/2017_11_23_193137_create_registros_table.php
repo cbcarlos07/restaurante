@@ -14,12 +14,13 @@ class CreateRegistrosTable extends Migration
     {
         Schema::create('registros', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('cliente')->unsigned();
-            $table->integer('item')->unsigned();
-            $table->decimal('vl_preco',10,2);
-            $table->date('dt_registro');
-            $table->char('sn_pago',1);
-            $table->integer('qt_compra');
+            $table->integer( 'cliente' )->unsigned()->index();
+            $table->integer( 'item' )->unsigned()->index();
+            $table->decimal( 'vl_preco',10,2 );
+            $table->char( 'sn_pago',1 );
+            $table->integer( 'qt_compra' )->unsigned();
+            $table->foreign( 'cliente' )->references( 'id' )->on('clientes') ;
+            $table->foreign( 'item' )->references( 'id' )->on('item') ;
             $table->timestamps();
         });
     }

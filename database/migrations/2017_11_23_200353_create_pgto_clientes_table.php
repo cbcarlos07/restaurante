@@ -12,12 +12,12 @@ class CreatePgtoClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pgto_clientes', function (Blueprint $table) {
+        Schema::create('pgto_cliente', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('registro')->unsigned();
-            $table->date('dt_pgto');
-            $table->decimal('nr_valor',10,2);
-            $table->foreign('registro')->references('id')->on('registros');
+            $table->integer( 'registro' )->unsigned();
+            $table->date( 'dt_pgto' );
+            $table->decimal( 'nr_valor' );
+            $table->foreign( 'registro' )->references('id')->on('registros');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreatePgtoClientesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('pgto_clientes');
+        Schema::drop('pgto_cliente');
     }
 }

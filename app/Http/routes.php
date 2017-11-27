@@ -18,6 +18,14 @@ Route::auth();
 Route::get('/home', 'HomeController@index');
 
 
+Route::group(['as' => 'lanc.', 'prefix' => 'lancamento'], function (){
+    Route::get('',['as' => 'index', 'uses' => 'RegistroController@lancamentos']);
+    Route::post('registrarCompra',['as' => 'registrar', 'uses' => 'RegistroController@registrarCompra']);
+    Route::post('registro',['as' => 'registro', 'uses' => 'RegistroController@listaRegistros']);
+    Route::post('pagar',['as' => 'pagar', 'uses' => 'RegistroController@registrarPagamento']);
+});
+
+
 Route::group(['as' => 'cli.', 'prefix' => 'cliente'], function (){
     Route::get('',['as' => 'index', 'uses' => 'ClienteController@index']);
     Route::get('cadastrar',['as' => 'create', 'uses' => 'ClienteController@create']);
@@ -43,6 +51,7 @@ Route::group(['as' => 'item.', 'prefix' => 'item'], function (){
     Route::post('delete',['as' => 'remove', 'uses' => 'ItemController@remove']);
     Route::post('edit',['as' => 'edit', 'uses' => 'ItemController@edit']);
     Route::post('update',['as' => 'update', 'uses' => 'ItemController@update']);
+    Route::post('getValue',['as' => 'getValue', 'uses' => 'ItemController@getItemValue']);
 });
 
 Route::group(['as' => 'emp.','prefix' => 'empresa'], function(){

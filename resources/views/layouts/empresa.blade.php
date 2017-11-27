@@ -82,6 +82,10 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div style="text-align: center">
+                                {{ $empresa->links() }}
+                            </div>
+
                         </div>
 
                     </div>
