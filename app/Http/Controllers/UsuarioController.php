@@ -126,7 +126,7 @@ class UsuarioController extends Controller
             ],
             [
                 'nome'  => 'required|min:6'
-                ,'pwd'   => 'required|min:8'
+                ,'pwd'   => 'required|min:8:confirmed'
                 ,'pwd1'   => 'required|min:8'
                 ,'email' => 'required'
             ],
@@ -159,4 +159,28 @@ class UsuarioController extends Controller
 
 
     }
+
+    public function sair(  ){
+
+        return view('layouts.sair');
+
+    }
+
+    public function logOff( ){
+        \Session::flush();
+        return redirect(  )->action( 'UsuarioController@login' );
+    }
+
+    public function alterarSenha( ){
+        $user = User::find( \Auth::id() );
+
+        return view( 'layouts.ususenha' )->with( 'user', $user );
+    }
+
+    public function login( ){
+
+        return view( 'auth.login' );
+    }
+
+
 }

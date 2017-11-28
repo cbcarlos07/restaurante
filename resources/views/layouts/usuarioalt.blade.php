@@ -61,7 +61,12 @@
                                 <input id="token" type="hidden" value="{{ csrf_token() }}" name="_token"/>
                                 <input type="hidden" value="{{ $usuario->id }}" name="id">
 
-                                <input type="hidden" value="N" name="sn_atual">
+                                @if( \Auth::id() == $usuario->id )
+                                    <input type="hidden" value="S" name="sn_atual">
+                                @else
+                                    <input type="hidden" value="N" name="sn_atual">
+                                @endif
+
                                 <div class="form-group col-lg-10 {{ $errors->has('nome') ? ' has-error' : '' }}">
                                     <label for="nome">Nome</label>
                                     <input id="nome" name="nome" class="form-control " required value="{{ $usuario->name }}"/>
@@ -89,14 +94,33 @@
                                         <input type="checkbox" value="S" name="sn_ativo" checked >Ativo
                                     </label>
                                 </div>
-                                <div class="form-group col-lg-3">
-                                    {{--<label for="senha">Digite a senha</label>--}}
-                                    <input type="hidden" name="password" id="senha" class="form-control" placeholder="Senha" required value="12345678"/>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    {{--<label for="senha">Repita a senha</label>--}}
-                                    <input type="hidden" name="password1" id="senha" class="form-control" placeholder="Repita a Senha" required value="12345678"/>
-                                </div>
+
+                                @if( Auth::id() == $usuario->id )
+                                    <div class="form-group col-lg-3 {{ $errors->has('pwd') ? ' has-error' : '' }}">
+                                        {{--<label for="senha">Digite a senha</label>--}}
+                                        <input  name="password" id="senha" class="form-control" placeholder="Senha" required />
+                                        @if ($errors->has('pwd'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('pwd') }}</strong>
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        {{--<label for="senha">Repita a senha</label>--}}
+                                        <input name="password1" id="senha" class="form-control" placeholder="Repita a Senha" required />
+                                    </div>
+                                @else
+                                    <div class="form-group col-lg-3">
+                                        {{--<label for="senha">Digite a senha</label>--}}
+                                        <input type="hidden" name="password" id="senha" class="form-control" placeholder="Senha" required value="12345678"/>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        {{--<label for="senha">Repita a senha</label>--}}
+                                        <input type="hidden" name="password1" id="senha" class="form-control" placeholder="Repita a Senha" required value="12345678"/>
+                                    </div>
+                                @endif
+
+
 
                                 <div class="row"></div>
                                 <div class="col-lg-3">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CONTROLE DE LANC&ccedil;AMENTO DE D&Eacute;BITOS</title>
+    <title>CONTROLE DE LAN&Ccedil;AMENTO DE D&Eacute;BITOS</title>
 
     <link href="{{ url('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url('css/styles.css') }}" rel="stylesheet">
@@ -33,9 +33,9 @@
                 <li class="dropdown pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>  {{ Auth::user()->name }}  <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-                        <li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
-                        <li><a href="#" class="btn-login"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+                        <li><a href="#" class="btn-profile" data-id="{{ \Auth::id() }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+                       {{-- <li><a href="#" ><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>--}}
+                        <li><a href="{{ route('usu.sair') }}" class="btn-login"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -125,20 +125,15 @@
             }
         });
 
-        $('.btn-login').on('click', function () {
-            $.ajax({
-                url  : 'function/usuario.php',
-                type: 'post',
-                dataType : 'json',
-                data : {
-                    acao : 'D'
-                },
-                success : function (data) {
-                    if( data.success === 1){
-                        location.href = "./";
-                    }
-                }
-            })
+        $('.btn-profile').on('click', function () {
+            var id = $(this).data('id');
+            console.log('ID: '+id);
+            var form = $('<form action="{{ route('usu.edit') }}" method="post">'+
+                            '<input type="hidden" name="_token" value="{{ csrf_token() }}">'+
+                            '<input type="hidden" name="id" value="'+id+'">'+
+                        '</form>');
+            $('body').append( form );
+            form.submit();
         })
     </script>
 </body>
